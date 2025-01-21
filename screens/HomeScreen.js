@@ -1,61 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { fetchPopularMovies } from '../services/api';
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch movies from API (You can replace this with actual API calls)
-    setMovies([
-      { id: '1', title: 'Movie 1', year: '2025', poster: 'https://example.com/poster1.jpg' },
-      { id: '2', title: 'Movie 2', year: '2024', poster: 'https://example.com/poster2.jpg' },
-      // Add more mock data here
-    ]);
+    const fetchMovies = async () => {
+      const data = await fetchPopularMovies();
+      if (data && data.results) {
+        setMovies(data.results.slice(0, 10)); // Limit to 10 movies
+      }
+      setLoading(false);
+    };
+
+    fetchMovies();
   }, []);
 
-  const navigateToDetails = (movie) => {
-    navigation.navigate('MovieDetails', { movie });
-  };
+  const renderMovie = ({ item }) => (
+    <View style={styles.movieContainer}>
+      <Image
+        source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
+        style={styles.poster}
+      />
+      <Text style={styles.title}>{item.title}</Text>
+    </View>
+  );
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Most Recent Movies</Text>
-      <FlatList
-        data={movies}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigateToDetails(item)}>
-            <View style={styles.movieContainer}>
-              <Text style={styles.movieTitle}>{item.title}</Text>
-              <Text style={styles.movieYear}>{item.year}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
+    <FlatList
+      data={movies}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={renderMovie}
+      contentContainerStyle={styles.list}
+      ListEmptyComponent={<Text style={styles.emptyText}>No movies found</Text>}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  list: {
     padding: 10,
   },
-  header: {
-    fontSize: 20,
+  movieContainer: {
+    flexDirection: 'row',
+    marginBottom: 15,
+    alignItems: 'center',
+  },
+  poster: {
+    width: 50,
+    height: 75,
+    marginRight: 10,
+  },
+  title: {
+    fontSize: 16,
     fontWeight: 'bold',
   },
-  movieContainer: {
-    marginVertical: 10,
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  movieTitle: {
-    fontSize: 18,
-  },
-  movieYear: {
-    fontSize: 14,
-    color: 'gray',
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: 16,
+    color: '#555',
   },
 });
 

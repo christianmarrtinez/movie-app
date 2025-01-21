@@ -1,54 +1,54 @@
-// screens/SearchScreen.js
-
 import React, { useState } from 'react';
-import { View, TextInput, FlatList, TouchableOpacity, Text, Image, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { search } from '../mockData'; // Import the mock data
+import { View, TextInput, FlatList, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { fetchMoviesBySearch } from '../services/api';
 
 const SearchScreen = () => {
-  const navigation = useNavigation();
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleSearch = () => {
-    // Filter the movies based on the search query
-    const filteredMovies = search.Search.filter((movie) =>
-      movie.Title.toLowerCase().includes(query.toLowerCase())
-    );
-    setResults(filteredMovies);
+  const handleSearch = async () => {
+    setLoading(true);
+    const data = await fetchMoviesBySearch(query);
+    if (data && data.results) {
+      setMovies(data.results);
+    }
+    setLoading(false);
   };
 
-  const navigateToDetails = (movie) => {
-    navigation.navigate('MovieDetails', { movie });
-  };
+  const renderMovie = ({ item }) => (
+    <View style={styles.movieContainer}>
+      <Image
+        source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
+        style={styles.poster}
+      />
+      <Text style={styles.title}>{item.title}</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       <TextInput
-        style={styles.searchBar}
-        placeholder="Search for a movie..."
+        style={styles.input}
+        placeholder="Search for movies..."
         value={query}
         onChangeText={setQuery}
+        onSubmitEditing={handleSearch}
       />
-      <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-        <Text style={styles.searchButtonText}>Search</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSearch}>
+        <Text style={styles.buttonText}>Search</Text>
       </TouchableOpacity>
-
-      <FlatList
-        data={results}
-        keyExtractor={(item) => item.imdbID}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigateToDetails(item)}>
-            <View style={styles.movieContainer}>
-              <Image source={{ uri: item.Poster }} style={styles.poster} />
-              <View>
-                <Text style={styles.movieTitle}>{item.Title}</Text>
-                <Text style={styles.movieYear}>{item.Year}</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+      {loading ? (
+        <Text style={styles.loadingText}>Searching...</Text>
+      ) : (
+        <FlatList
+          data={movies}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderMovie}
+          contentContainerStyle={styles.list}
+          ListEmptyComponent={<Text style={styles.emptyText}>No movies found</Text>}
+        />
+      )}
     </View>
   );
 };
@@ -58,27 +58,31 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  searchBar: {
+  input: {
     height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
+    borderRadius: 5,
     marginBottom: 10,
     paddingHorizontal: 10,
   },
-  searchButton: {
-    backgroundColor: '#2a9d8f',
+  button: {
+    backgroundColor: '#007BFF',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
   },
-  searchButtonText: {
-    color: 'white',
-    fontSize: 16,
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  list: {
+    padding: 10,
   },
   movieContainer: {
     flexDirection: 'row',
-    marginVertical: 10,
+    marginBottom: 15,
     alignItems: 'center',
   },
   poster: {
@@ -86,13 +90,20 @@ const styles = StyleSheet.create({
     height: 75,
     marginRight: 10,
   },
-  movieTitle: {
+  title: {
     fontSize: 16,
     fontWeight: 'bold',
   },
-  movieYear: {
-    fontSize: 14,
-    color: 'gray',
+  loadingText: {
+    textAlign: 'center',
+    marginVertical: 10,
+    fontSize: 16,
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: 16,
+    color: '#555',
   },
 });
 
