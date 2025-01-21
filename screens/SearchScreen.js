@@ -8,8 +8,13 @@ const SearchScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSearch = async () => {
+    if (!query.trim()) {
+        return; // Don't make the API call if the query is empty
+      }
+
     setLoading(true);
     const data = await fetchMoviesBySearch(query);
+    console.log("Search Results:", data);
     if (data && data.results) {
       setMovies(data.results);
     }
@@ -28,16 +33,16 @@ const SearchScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TextInput
+    <TextInput
         style={styles.input}
         placeholder="Search for movies..."
         value={query}
         onChangeText={setQuery}
-        onSubmitEditing={handleSearch}
-      />
-      <TouchableOpacity style={styles.button} onPress={handleSearch}>
-        <Text style={styles.buttonText}>Search</Text>
-      </TouchableOpacity>
+        />
+    <TouchableOpacity style={styles.button} onPress={handleSearch}>
+    <Text style={styles.buttonText}>Search</Text>
+    </TouchableOpacity>
+
       {loading ? (
         <Text style={styles.loadingText}>Searching...</Text>
       ) : (
