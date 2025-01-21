@@ -10,7 +10,8 @@ react-native-screens: https://github.com/software-mansion/react-native-screens
 react-navigation (latest version, using @react-navigation/native-stack for stack navigation): https://reactnavigation.org/
 prop-types: https://www.npmjs.com/package/prop-types
 Any library for icons, such as react-native-vector-icons: https://github.com/oblador/react-native-vector-icons
-Functional Features:
+
+# Functional Features:
 Implement at least one Stack.Navigator to manage navigation between screens.
 Include a Search Screen:
 Allow users to search for movies by title.
@@ -19,6 +20,7 @@ Include a Details Screen:
 Display additional information (e.g., title, plot, release year, poster, etc.) about the selected movie.
 Aesthetics:
 The design and layout of the app are up to you, but it should be visually appealing and user-friendly.
+
 # Optional Challenge
 Add pagination to load search results dynamically as the user scrolls.
 Allow users to save favorite movies and view them in a separate screen.
