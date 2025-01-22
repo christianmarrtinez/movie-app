@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { View, TextInput, FlatList, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { fetchMoviesBySearch } from '../services/api';
 
 const SearchScreen = () => {
   const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation(); // Get navigation object
 
   const handleSearch = async () => {
     if (!query.trim()) {
-        return; // Don't make the API call if the query is empty
-      }
+      return; // Don't make the API call if the query is empty
+    }
 
     setLoading(true);
     const data = await fetchMoviesBySearch(query);
-    console.log("Search Results:", data);
     if (data && data.results) {
       setMovies(data.results);
     }
@@ -22,26 +23,29 @@ const SearchScreen = () => {
   };
 
   const renderMovie = ({ item }) => (
-    <View style={styles.movieContainer}>
+    <TouchableOpacity
+      style={styles.movieContainer}
+      onPress={() => navigation.navigate('MovieDetails', { movie: item })}
+    >
       <Image
         source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
         style={styles.poster}
       />
       <Text style={styles.title}>{item.title}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-    <TextInput
+      <TextInput
         style={styles.input}
         placeholder="Search for movies..."
         value={query}
         onChangeText={setQuery}
-        />
-    <TouchableOpacity style={styles.button} onPress={handleSearch}>
-    <Text style={styles.buttonText}>Search</Text>
-    </TouchableOpacity>
+      />
+      <TouchableOpacity style={styles.button} onPress={handleSearch}>
+        <Text style={styles.buttonText}>Search</Text>
+      </TouchableOpacity>
 
       {loading ? (
         <Text style={styles.loadingText}>Searching...</Text>

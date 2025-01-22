@@ -1,5 +1,3 @@
-// screens/MovieDetailsScreen.js
-
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -10,20 +8,11 @@ const MovieDetailsScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image source={{ uri: movie.Poster }} style={styles.poster} />
-      <Text style={styles.title}>{movie.Title}</Text>
-      <Text style={styles.details}>Year: {movie.Year}</Text>
-      <Text style={styles.details}>Rated: {movie.Rated}</Text>
-      <Text style={styles.details}>Released: {movie.Released}</Text>
-      <Text style={styles.details}>Runtime: {movie.Runtime}</Text>
-      <Text style={styles.details}>Genre: {movie.Genre}</Text>
-      <Text style={styles.details}>Director: {movie.Director}</Text>
-      <Text style={styles.details}>Writer: {movie.Writer}</Text>
-      <Text style={styles.details}>Actors: {movie.Actors}</Text>
-      <Text style={styles.plot}>{movie.Plot}</Text>
-      <Text style={styles.details}>Language: {movie.Language}</Text>
-      <Text style={styles.details}>Country: {movie.Country}</Text>
-      <Text style={styles.details}>Awards: {movie.Awards}</Text>
+        <Image source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }} style={styles.poster} />
+        <Text style={styles.title}>{movie.title}</Text>
+        <Text style={styles.details}>Release Date: {movie.release_date}</Text>
+        <Text style={styles.details}>Rating: {movie.vote_average}</Text>
+        <Text style={styles.plot}>{movie.overview}</Text>
     </ScrollView>
   );
 };

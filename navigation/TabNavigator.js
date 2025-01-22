@@ -1,5 +1,3 @@
-// navigation/TabNavigator.js
-
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -12,10 +10,11 @@ import MovieDetailsScreen from '../screens/MovieDetailsScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 
+// Creating Bottom Tab Navigator
 const Tab = createBottomTabNavigator();
-const SearchStack = createNativeStackNavigator();
 
-// Stack Navigator for Search and Movie Details
+// Creating Stack Navigator for Search
+const SearchStack = createNativeStackNavigator();
 const SearchStackNavigator = () => (
   <SearchStack.Navigator>
     <SearchStack.Screen 
@@ -29,6 +28,23 @@ const SearchStackNavigator = () => (
       options={{ title: 'Movie Details' }} 
     />
   </SearchStack.Navigator>
+);
+
+// Creating Stack Navigator for Home
+const HomeStack = createNativeStackNavigator();
+const HomeStackNavigator = () => (
+  <HomeStack.Navigator>
+    <HomeStack.Screen 
+      name="Home" 
+      component={HomeScreen} 
+      options={{ title: 'Home' }} 
+    />
+    <HomeStack.Screen 
+      name="MovieDetails" 
+      component={MovieDetailsScreen} 
+      options={{ title: 'Movie Details' }} 
+    />
+  </HomeStack.Navigator>
 );
 
 const TabNavigator = () => (
@@ -54,8 +70,16 @@ const TabNavigator = () => (
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Search" component={SearchStackNavigator} options={{ headerShown: false }} />
+      <Tab.Screen 
+        name="Home" 
+        component={HomeStackNavigator} 
+        options={{ headerShown: false }} 
+      />
+      <Tab.Screen 
+        name="Search" 
+        component={SearchStackNavigator} 
+        options={{ headerShown: false }} 
+      />
       <Tab.Screen name="Categories" component={CategoriesScreen} />
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
     </Tab.Navigator>

@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { fetchPopularMovies } from '../services/api';
 
 const HomeScreen = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation(); 
 
   useEffect(() => {
     const loadPopularMovies = async () => {
-      setLoading(true); 
-      const data = await fetchPopularMovies(); 
+      setLoading(true);
+      const data = await fetchPopularMovies();
       if (data && data.results) {
-        setMovies(data.results.slice(0, 10)); // Limit to 10 movies
+        setMovies(data.results.slice(0, 10)); 
       }
-      setLoading(false); 
+      setLoading(false);
     };
 
     loadPopularMovies();
   }, []);
 
   const renderMovie = ({ item }) => (
-    <View style={styles.movieContainer}>
+    <TouchableOpacity
+      style={styles.movieContainer}
+      onPress={() => navigation.navigate('MovieDetails', { movie: item })} // No change needed
+    >
       <Image
         source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
         style={styles.poster}
       />
       <Text style={styles.title}>{item.title}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   if (loading) {
