@@ -1,30 +1,37 @@
 const API_KEY = '29c9f8e4189802108a162a90fe8e239c';
 const BASE_URL = 'https://api.themoviedb.org/3';
 
-export const fetchMoviesBySearch = async (query) => {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&language=en-US&page=1`
-      );
-      const data = await response.json();
-      return data; // Ensure the response is returned
-    } catch (error) {
-      console.error("Error fetching search results:", error);
-    }
-  };
-  
 
-// Fetch popular movies for the Home screen
+export const fetchMovies = async (endpoint, params = {}) => {
+  try {
+    
+    const queryParams = new URLSearchParams({ api_key: API_KEY, ...params }).toString();
+    const url = `${BASE_URL}${endpoint}?${queryParams}`;
+
+    
+    const response = await fetch(url);
+    const data = await response.json();
+
+    
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return null;
+  }
+};
+
+
 export const fetchPopularMovies = async () => {
-  return fetchMovies('/movie/popular');
+  
+  return fetchMovies('/movie/popular', { language: 'en-US', page: 1 });
 };
 
-// Search for movies
-export const searchMovies = async (query) => {
-  return fetchMovies('/search/movie', query);
+export const fetchMoviesBySearch = async (query) => {
+ 
+  return fetchMovies('/search/movie', { query, language: 'en-US', page: 1 });
 };
 
-// Fetch movies by category (e.g., genre)
 export const fetchMoviesByCategory = async (genreId) => {
-  return fetchMovies('/discover/movie', `&with_genres=${genreId}`);
+  // Discover endpoint for movies by category
+  return fetchMovies('/discover/movie', { with_genres: genreId, language: 'en-US', page: 1 });
 };

@@ -7,15 +7,16 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      const data = await fetchPopularMovies();
+    const loadPopularMovies = async () => {
+      setLoading(true); 
+      const data = await fetchPopularMovies(); 
       if (data && data.results) {
         setMovies(data.results.slice(0, 10)); // Limit to 10 movies
       }
-      setLoading(false);
+      setLoading(false); 
     };
 
-    fetchMovies();
+    loadPopularMovies();
   }, []);
 
   const renderMovie = ({ item }) => (
