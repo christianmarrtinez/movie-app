@@ -31,10 +31,19 @@ export const fetchMoviesBySearch = async (query) => {
   return fetchMovies('/search/movie', { query, language: 'en-US', page: 1 });
 };
 
-export const fetchMoviesByCategory = async (genreId) => {
-  // Discover endpoint for movies by category
-  return fetchMovies('/discover/movie', { with_genres: genreId, language: 'en-US', page: 1 });
-};
+export const fetchMoviesByCategory = async (categoryId) => {
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=29c9f8e4189802108a162a90fe8e239c&with_genres=${categoryId}`
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching movies by category:', error);
+      return null;
+    }
+  };
+  
 
 export const getMovieCategories = async () => {
     try {

@@ -1,36 +1,63 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, SectionList } from 'react-native';
-import { getMoviesByCategory } from '../services/api'; // Ensure this function is implemented in your API file
+import { View, FlatList, Image, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { fetchMoviesByCategory } from '../services/api'; // Define this in your `api.js`
 
-const MoviesByCategoryScreen = ({ route, navigation }) => {
+const MoviesByCategoryScreen = () => {
+  const route = useRoute();
+  const navigation = useNavigation();
   const { categoryId, categoryName } = route.params;
+
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      const data = await getMoviesByCategory(categoryId); // Fetch movies for the selected category
-      const sortedMovies = data.results.sort((a, b) => a.title.localeCompare(b.title));
-      setMovies(sortedMovies);
+    const loadMovies = async () => {
+      setLoading(true);
+      const data = await fetchMoviesByCategory(categoryId);
+      if (data && data.results) {
+        setMovies(data.results);
+      }
+      setLoading(false);
     };
 
-    fetchMovies();
+    loadMovies();
   }, [categoryId]);
 
-  const handleMoviePress = (movie) => {
-    navigation.navigate('MovieDetails', { movieId: movie.id });
-  };
+  const renderMovie = ({ item }) => (
+    <TouchableOpacity
+      style={styles.movieContainer}
+      onPress={() => navigation.navigate('MovieDetails', { movie: item })}
+    >
+      <Image
+        source={{
+            uri: item.poster_path
+              ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
+              : 'https://via.placeholder.com/150x225?text=No+Image',
+          }}
+        style={styles.poster}
+      />
+      <Text style={styles.title}>{item.title}</Text>
+    </TouchableOpacity>
+  );
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{categoryName}</Text>
+      <Text style={styles.header}>{categoryName} Movies</Text>
       <FlatList
         data={movies}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handleMoviePress(item)} style={styles.movieButton}>
-            <Text style={styles.movieText}>{item.title}</Text>
-          </TouchableOpacity>
-        )}
+        renderItem={renderMovie}
+        contentContainerStyle={styles.list}
+        ListEmptyComponent={<Text style={styles.emptyText}>No movies found</Text>}
       />
     </View>
   );
@@ -39,24 +66,40 @@ const MoviesByCategoryScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     padding: 10,
   },
-  title: {
-    fontSize: 22,
+  header: {
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    textAlign: 'center',
   },
-  movieButton: {
-    padding: 15,
-    marginVertical: 5,
-    backgroundColor: '#f4a261',
-    borderRadius: 8,
+  list: {
+    padding: 10,
   },
-  movieText: {
-    color: '#fff',
+  movieContainer: {
+    flexDirection: 'row',
+    marginBottom: 15,
+    alignItems: 'center',
+  },
+  poster: {
+    width: 50,
+    height: 75,
+    marginRight: 10,
+  },
+  title: {
     fontSize: 16,
+    fontWeight: 'bold',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: 16,
+    color: '#555',
   },
 });
 
