@@ -1,22 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { getMovieCategories } from '../services/api';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import { getMovieCategories, fetchMoviesByCategory } from '../services/api';
 
 const CategoriesScreen = ({ navigation }) => {
   const [categories, setCategories] = useState([]);
+  const [categoryImages, setCategoryImages] = useState({});
+  const [usedMovieIds, setUsedMovieIds] = useState(new Set());
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const data = await getMovieCategories(); 
-        console.log('Fetched Categories:', data);
+        const data = await getMovieCategories();
         if (data && data.genres) {
-          setCategories(data.genres); 
+          setCategories(data.genres);
+
+          // Fetch a random image for each category
+          const images = {};
+          for (const category of data.genres) {
+            const moviesData = await fetchMoviesByCategory(category.id);
+
+            if (moviesData && moviesData.results) {
+              // Filter out movies already used in other categories
+              const filteredMovies = moviesData.results.filter(
+                (movie) => !usedMovieIds.has(movie.id)
+              );
+
+              if (filteredMovies.length > 0) {
+                const randomMovie = filteredMovies[Math.floor(Math.random() * filteredMovies.length)];
+                images[category.id] = randomMovie.poster_path
+                  ? `https://image.tmdb.org/t/p/w500${randomMovie.poster_path}`
+                  : 'https://via.placeholder.com/150x225?text=No+Image';
+
+                // Add movie ID to the used set
+                setUsedMovieIds((prev) => new Set([...prev, randomMovie.id]));
+              }
+            }
+          }
+          setCategoryImages(images);
         } else {
           console.error('Error: No genres found in API response.');
         }
       } catch (error) {
-        console.error('Error fetching categories:', error); 
+        console.error('Error fetching categories:', error);
       }
     };
 
@@ -34,7 +59,15 @@ const CategoriesScreen = ({ navigation }) => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => handleCategoryPress(item)} style={styles.categoryButton}>
-            <Text style={styles.categoryText}>{item.name}</Text>
+            <View style={styles.row}>
+              <Image
+                source={{
+                  uri: categoryImages[item.id] || 'https://via.placeholder.com/150x225?text=No+Image',
+                }}
+                style={styles.image}
+              />
+              <Text style={styles.categoryText}>{item.name}</Text>
+            </View>
           </TouchableOpacity>
         )}
       />
@@ -53,6 +86,16 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     backgroundColor: '#2a9d8f',
     borderRadius: 8,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  image: {
+    width: 50,
+    height: 75,
+    marginRight: 15,
+    borderRadius: 4,
   },
   categoryText: {
     color: '#fff',

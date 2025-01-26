@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, Image, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { fetchMoviesByCategory } from '../services/api'; // Define this in your `api.js`
+import { fetchMoviesByCategory } from '../services/api';
 
 const MoviesByCategoryScreen = () => {
   const route = useRoute();
@@ -10,13 +10,21 @@ const MoviesByCategoryScreen = () => {
 
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [usedMovieIds, setUsedMovieIds] = useState(new Set());
 
   useEffect(() => {
     const loadMovies = async () => {
       setLoading(true);
       const data = await fetchMoviesByCategory(categoryId);
+
       if (data && data.results) {
-        setMovies(data.results);
+        // Filter out movies already used
+        const filteredMovies = data.results.filter((movie) => !usedMovieIds.has(movie.id));
+
+        // Update the used movies set
+        setUsedMovieIds((prev) => new Set([...prev, ...filteredMovies.map((movie) => movie.id)]));
+
+        setMovies(filteredMovies);
       }
       setLoading(false);
     };
@@ -31,10 +39,10 @@ const MoviesByCategoryScreen = () => {
     >
       <Image
         source={{
-            uri: item.poster_path
-              ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
-              : 'https://via.placeholder.com/150x225?text=No+Image',
-          }}
+          uri: item.poster_path
+            ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
+            : 'https://via.placeholder.com/150x225?text=No+Image',
+        }}
         style={styles.poster}
       />
       <Text style={styles.title}>{item.title}</Text>
