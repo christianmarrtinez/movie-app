@@ -35,3 +35,20 @@ export const fetchMoviesByCategory = async (genreId) => {
   // Discover endpoint for movies by category
   return fetchMovies('/discover/movie', { with_genres: genreId, language: 'en-US', page: 1 });
 };
+
+export const getMovieCategories = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`);
+      const data = await response.json();
+      return data; // Ensure this returns { genres: [...] }
+    } catch (error) {
+      console.error('Error fetching movie categories:', error);
+      return null;
+    }
+  };
+  
+  
+  export const getMoviesByCategory = async (categoryId) => {
+    const response = await axios.get(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${categoryId}`);
+    return response.data;
+  };

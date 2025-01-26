@@ -8,6 +8,7 @@ import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import MovieDetailsScreen from '../screens/MovieDetailsScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
+import MoviesByCategoryScreen from '../screens/MoviesByCategoryScreen'; // Import the new screen
 import FavoritesScreen from '../screens/FavoritesScreen';
 
 // Creating Bottom Tab Navigator
@@ -47,6 +48,28 @@ const HomeStackNavigator = () => (
   </HomeStack.Navigator>
 );
 
+// Creating Stack Navigator for Categories
+const CategoriesStack = createNativeStackNavigator();
+const CategoriesStackNavigator = () => (
+  <CategoriesStack.Navigator>
+    <CategoriesStack.Screen 
+      name="Categories" 
+      component={CategoriesScreen} 
+      options={{ title: 'Categories' }} 
+    />
+    <CategoriesStack.Screen 
+      name="MoviesByCategory" 
+      component={MoviesByCategoryScreen} 
+      options={({ route }) => ({ title: route.params.categoryName })} 
+    />
+    <CategoriesStack.Screen 
+      name="MovieDetails" 
+      component={MovieDetailsScreen} 
+      options={{ title: 'Movie Details' }} 
+    />
+  </CategoriesStack.Navigator>
+);
+
 const TabNavigator = () => (
   <NavigationContainer>
     <Tab.Navigator
@@ -80,7 +103,11 @@ const TabNavigator = () => (
         component={SearchStackNavigator} 
         options={{ headerShown: false }} 
       />
-      <Tab.Screen name="Categories" component={CategoriesScreen} />
+      <Tab.Screen 
+        name="Categories" 
+        component={CategoriesStackNavigator} 
+        options={{ headerShown: false }} 
+      />
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
     </Tab.Navigator>
   </NavigationContainer>
