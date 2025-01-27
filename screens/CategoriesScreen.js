@@ -14,13 +14,12 @@ const CategoriesScreen = ({ navigation }) => {
         if (data && data.genres) {
           setCategories(data.genres);
 
-          // Fetch a random image for each category
+ 
           const images = {};
           for (const category of data.genres) {
             const moviesData = await fetchMoviesByCategory(category.id);
 
             if (moviesData && moviesData.results) {
-              // Filter out movies already used in other categories
               const filteredMovies = moviesData.results.filter(
                 (movie) => !usedMovieIds.has(movie.id)
               );
@@ -31,7 +30,7 @@ const CategoriesScreen = ({ navigation }) => {
                   ? `https://image.tmdb.org/t/p/w500${randomMovie.poster_path}`
                   : 'https://via.placeholder.com/150x225?text=No+Image';
 
-                // Add movie ID to the used set
+
                 setUsedMovieIds((prev) => new Set([...prev, randomMovie.id]));
               }
             }

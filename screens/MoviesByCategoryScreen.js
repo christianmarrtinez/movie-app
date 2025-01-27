@@ -18,10 +18,10 @@ const MoviesByCategoryScreen = () => {
       const data = await fetchMoviesByCategory(categoryId);
 
       if (data && data.results) {
-        // Filter out movies already used
+       
         const filteredMovies = data.results.filter((movie) => !usedMovieIds.has(movie.id));
 
-        // Update the used movies set
+
         setUsedMovieIds((prev) => new Set([...prev, ...filteredMovies.map((movie) => movie.id)]));
 
         setMovies(filteredMovies);

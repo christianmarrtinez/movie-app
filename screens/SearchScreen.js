@@ -7,11 +7,12 @@ const SearchScreen = () => {
   const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation(); // Get navigation object
+  const [hasSearched, setHasSearched] = useState(false);
+  const navigation = useNavigation();
 
   const handleSearch = async () => {
     if (!query.trim()) {
-      return; // Don't make the API call if the query is empty
+      return;
     }
 
     setLoading(true);
@@ -20,6 +21,7 @@ const SearchScreen = () => {
       setMovies(data.results);
     }
     setLoading(false);
+    setHasSearched(true); 
   };
 
   const renderMovie = ({ item }) => (
@@ -28,7 +30,11 @@ const SearchScreen = () => {
       onPress={() => navigation.navigate('MovieDetails', { movie: item })}
     >
       <Image
-        source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
+        source={{
+          uri: item.poster_path
+            ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
+            : 'https://via.placeholder.com/150x225?text=No+Image',
+        }}
         style={styles.poster}
       />
       <Text style={styles.title}>{item.title}</Text>
@@ -55,7 +61,11 @@ const SearchScreen = () => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderMovie}
           contentContainerStyle={styles.list}
-          ListEmptyComponent={<Text style={styles.emptyText}>No movies found</Text>}
+          ListEmptyComponent={
+            hasSearched ? (
+              <Text style={styles.emptyText}>No movies found</Text>
+            ) : null 
+          }
         />
       )}
     </View>
