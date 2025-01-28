@@ -8,13 +8,13 @@ import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import MovieDetailsScreen from '../screens/MovieDetailsScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
-import MoviesByCategoryScreen from '../screens/MoviesByCategoryScreen'; // Import the new screen
-import FavoritesScreen from '../screens/FavoritesScreen';
+import MoviesByCategoryScreen from '../screens/MoviesByCategoryScreen'; 
 
-// Creating Bottom Tab Navigator
+
+
 const Tab = createBottomTabNavigator();
 
-// Creating Stack Navigator for Search
+
 const SearchStack = createNativeStackNavigator();
 const SearchStackNavigator = () => (
   <SearchStack.Navigator>
@@ -31,7 +31,7 @@ const SearchStackNavigator = () => (
   </SearchStack.Navigator>
 );
 
-// Creating Stack Navigator for Home
+
 const HomeStack = createNativeStackNavigator();
 const HomeStackNavigator = () => (
   <HomeStack.Navigator>
@@ -48,7 +48,7 @@ const HomeStackNavigator = () => (
   </HomeStack.Navigator>
 );
 
-// Creating Stack Navigator for Categories
+
 const CategoriesStack = createNativeStackNavigator();
 const CategoriesStackNavigator = () => (
   <CategoriesStack.Navigator>
@@ -108,7 +108,6 @@ const TabNavigator = () => (
         component={CategoriesStackNavigator} 
         options={{ headerShown: false }} 
       />
-      <Tab.Screen name="Favorites" component={FavoritesScreen} />
     </Tab.Navigator>
   </NavigationContainer>
 );
