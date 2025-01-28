@@ -77,13 +77,13 @@ const CategoriesScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#28353d',
     padding: 10,
   },
   categoryButton: {
     padding: 15,
     marginVertical: 5,
-    backgroundColor: '#2a9d8f',
+    backgroundColor: '#60d3e1',
     borderRadius: 8,
   },
   row: {

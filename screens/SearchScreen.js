@@ -48,6 +48,7 @@ const SearchScreen = () => {
         placeholder="Search for movies..."
         value={query}
         onChangeText={setQuery}
+        placeholderTextColor="white"
       />
       <TouchableOpacity style={styles.button} onPress={handleSearch}>
         <Text style={styles.buttonText}>Search</Text>
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    backgroundColor: '#28353d',
   },
   input: {
     height: 40,
@@ -84,9 +86,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     paddingHorizontal: 10,
+    color: 'white',  
+    placeholderTextColor: '#ffffff', 
+    backgroundColor: 'transparent',
   },
   button: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#60d3e1',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -112,11 +117,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'white',
   },
   loadingText: {
     textAlign: 'center',
     marginVertical: 10,
     fontSize: 16,
+    color: 'white',
   },
   emptyText: {
     textAlign: 'center',

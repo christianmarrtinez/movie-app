@@ -72,43 +72,46 @@ const MoviesByCategoryScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  list: {
-    padding: 10,
-  },
-  movieContainer: {
-    flexDirection: 'row',
-    marginBottom: 15,
-    alignItems: 'center',
-  },
-  poster: {
-    width: 50,
-    height: 75,
-    marginRight: 10,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyText: {
-    textAlign: 'center',
-    marginTop: 20,
-    fontSize: 16,
-    color: '#555',
-  },
-});
-
-export default MoviesByCategoryScreen;
+    container: {
+      flex: 1,
+      padding: 10,
+      backgroundColor: '#28353d', 
+    },
+    header: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      color: 'white', 
+    },
+    list: {
+      padding: 10,
+    },
+    movieContainer: {
+      flexDirection: 'row',
+      marginBottom: 15,
+      alignItems: 'center',
+    },
+    poster: {
+      width: 50,
+      height: 75,
+      marginRight: 10,
+    },
+    title: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: 'white', 
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    emptyText: {
+      textAlign: 'center',
+      marginTop: 20,
+      fontSize: 16,
+      color: '#555',
+    },
+  });
+  
+  export default MoviesByCategoryScreen;

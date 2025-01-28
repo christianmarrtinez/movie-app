@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { fetchPopularMovies } from '../services/api';
+import globalStyles from '../styles/styles'; // Import global styles
 
 const HomeScreen = () => {
   const [movies, setMovies] = useState([]);
@@ -24,7 +25,7 @@ const HomeScreen = () => {
   const renderMovie = ({ item }) => (
     <TouchableOpacity
       style={styles.movieContainer}
-      onPress={() => navigation.navigate('MovieDetails', { movie: item })} // No change needed
+      onPress={() => navigation.navigate('MovieDetails', { movie: item })} 
     >
       <Image
         source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
@@ -36,7 +37,7 @@ const HomeScreen = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={globalStyles.container}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
@@ -61,6 +62,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 15,
     alignItems: 'center',
+    backgroundColor: '#28353d',
+    padding: 10, 
+    borderRadius: 5, 
   },
   poster: {
     width: 50,
@@ -70,6 +74,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'white', 
   },
   loadingContainer: {
     flex: 1,
@@ -80,7 +85,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     fontSize: 16,
-    color: '#555',
+    color: '#28353d',
   },
 });
 
