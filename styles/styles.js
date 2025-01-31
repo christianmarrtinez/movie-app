@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#28353d',
     padding: 10,
     borderRadius: 5,
-    borderWidth: 1, 
-    borderColor: '#60d3e1', 
+    borderWidth: 1,  
+    borderColor: '#60d3e1',
   },
   categoryButton: {
     padding: 15,
@@ -69,6 +69,38 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  input: {
+    height: 40,
+    borderColor: '#60d3e1',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    color: 'white',  
+    backgroundColor: 'transparent',
+  },
+  searchButton: {
+    backgroundColor: '#60d3e1',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  searchButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  poster: {
+    width: 50,
+    height: 75,
+    marginRight: 10,
+  },
+  loadingText: {
+    textAlign: 'center',
+    marginVertical: 10,
+    fontSize: 16,
+    color: 'white',
   },
 });
 

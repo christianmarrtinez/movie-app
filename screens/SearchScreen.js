@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, TextInput, FlatList, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, FlatList, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { fetchMoviesBySearch } from '../services/api';
+import styles from '../styles/styles'; 
 
 const SearchScreen = () => {
   const [query, setQuery] = useState('');
@@ -50,8 +51,8 @@ const SearchScreen = () => {
         onChangeText={setQuery}
         placeholderTextColor="white"
       />
-      <TouchableOpacity style={styles.button} onPress={handleSearch}>
-        <Text style={styles.buttonText}>Search</Text>
+      <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+        <Text style={styles.searchButtonText}>Search</Text>
       </TouchableOpacity>
 
       {loading ? (
@@ -72,65 +73,5 @@ const SearchScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#28353d',
-  },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    color: 'white',  
-    placeholderTextColor: '#ffffff', 
-    backgroundColor: 'transparent',
-  },
-  button: {
-    backgroundColor: '#60d3e1',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  list: {
-    padding: 10,
-  },
-  movieContainer: {
-    flexDirection: 'row',
-    marginBottom: 15,
-    alignItems: 'center',
-  },
-  poster: {
-    width: 50,
-    height: 75,
-    marginRight: 10,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  loadingText: {
-    textAlign: 'center',
-    marginVertical: 10,
-    fontSize: 16,
-    color: 'white',
-  },
-  emptyText: {
-    textAlign: 'center',
-    marginTop: 20,
-    fontSize: 16,
-    color: '#555',
-  },
-});
 
 export default SearchScreen;
