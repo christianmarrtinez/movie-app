@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { getMovieCategories, fetchMoviesByCategory } from '../services/api';
+import styles from '../styles/styles'; // Import global styles
 
 const CategoriesScreen = ({ navigation }) => {
   const [categories, setCategories] = useState([]);
@@ -14,7 +15,6 @@ const CategoriesScreen = ({ navigation }) => {
         if (data && data.genres) {
           setCategories(data.genres);
 
- 
           const images = {};
           for (const category of data.genres) {
             const moviesData = await fetchMoviesByCategory(category.id);
@@ -29,7 +29,6 @@ const CategoriesScreen = ({ navigation }) => {
                 images[category.id] = randomMovie.poster_path
                   ? `https://image.tmdb.org/t/p/w500${randomMovie.poster_path}`
                   : 'https://via.placeholder.com/150x225?text=No+Image';
-
 
                 setUsedMovieIds((prev) => new Set([...prev, randomMovie.id]));
               }
@@ -73,34 +72,5 @@ const CategoriesScreen = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#28353d',
-    padding: 10,
-  },
-  categoryButton: {
-    padding: 15,
-    marginVertical: 5,
-    backgroundColor: '#60d3e1',
-    borderRadius: 8,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  image: {
-    width: 50,
-    height: 75,
-    marginRight: 15,
-    borderRadius: 4,
-  },
-  categoryText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
 
 export default CategoriesScreen;

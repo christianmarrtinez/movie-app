@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { fetchPopularMovies } from '../services/api';
-import globalStyles from '../styles/styles'; // Import global styles
+import styles from '../styles/styles'; 
 
 const HomeScreen = () => {
   const [movies, setMovies] = useState([]);
@@ -24,21 +24,21 @@ const HomeScreen = () => {
 
   const renderMovie = ({ item }) => (
     <TouchableOpacity
-      style={styles.movieContainer}
-      onPress={() => navigation.navigate('MovieDetails', { movie: item })} 
+      style={styles.movieContainer} 
+      onPress={() => navigation.navigate('MovieDetails', { movie: item })}
     >
       <Image
         source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
-        style={styles.poster}
+        style={styles.image} 
       />
-      <Text style={styles.title}>{item.title}</Text>
+      <Text style={styles.title}>{item.title}</Text> 
     </TouchableOpacity>
   );
 
   if (loading) {
     return (
-      <View style={globalStyles.container}>
-        <ActivityIndicator size="large" color="#0000ff" />
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#60d3e1" />
       </View>
     );
   }
@@ -48,45 +48,11 @@ const HomeScreen = () => {
       data={movies}
       keyExtractor={(item) => item.id.toString()}
       renderItem={renderMovie}
-      contentContainerStyle={styles.list}
+      contentContainerStyle={[styles.list, { backgroundColor: '#28353d' }]} // Ensuring background color is set
       ListEmptyComponent={<Text style={styles.emptyText}>No movies found</Text>}
     />
   );
+  
 };
-
-const styles = StyleSheet.create({
-  list: {
-    padding: 10,
-  },
-  movieContainer: {
-    flexDirection: 'row',
-    marginBottom: 15,
-    alignItems: 'center',
-    backgroundColor: '#28353d',
-    padding: 10, 
-    borderRadius: 5, 
-  },
-  poster: {
-    width: 50,
-    height: 75,
-    marginRight: 10,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white', 
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyText: {
-    textAlign: 'center',
-    marginTop: 20,
-    fontSize: 16,
-    color: '#28353d',
-  },
-});
 
 export default HomeScreen;
