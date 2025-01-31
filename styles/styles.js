@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     borderWidth: 1,  
-    borderColor: '#60d3e1',
+    borderColor: '#60d3e1', 
   },
   categoryButton: {
     padding: 15,
@@ -102,6 +102,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
   },
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+    color: 'white', 
+  },
+  
 });
 
 export default styles;

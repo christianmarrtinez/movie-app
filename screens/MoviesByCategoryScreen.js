@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Image, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, FlatList, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { fetchMoviesByCategory } from '../services/api';
+import styles from '../styles/styles';
 
 const MoviesByCategoryScreen = () => {
   const route = useRoute();
@@ -18,12 +19,9 @@ const MoviesByCategoryScreen = () => {
       const data = await fetchMoviesByCategory(categoryId);
 
       if (data && data.results) {
-       
         const filteredMovies = data.results.filter((movie) => !usedMovieIds.has(movie.id));
 
-
         setUsedMovieIds((prev) => new Set([...prev, ...filteredMovies.map((movie) => movie.id)]));
-
         setMovies(filteredMovies);
       }
       setLoading(false);
@@ -34,7 +32,7 @@ const MoviesByCategoryScreen = () => {
 
   const renderMovie = ({ item }) => (
     <TouchableOpacity
-      style={styles.movieContainer}
+      style={styles.movieContainer}  
       onPress={() => navigation.navigate('MovieDetails', { movie: item })}
     >
       <Image
@@ -71,47 +69,4 @@ const MoviesByCategoryScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 10,
-      backgroundColor: '#28353d', 
-    },
-    header: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      marginBottom: 10,
-      color: 'white', 
-    },
-    list: {
-      padding: 10,
-    },
-    movieContainer: {
-      flexDirection: 'row',
-      marginBottom: 15,
-      alignItems: 'center',
-    },
-    poster: {
-      width: 50,
-      height: 75,
-      marginRight: 10,
-    },
-    title: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: 'white', 
-    },
-    loadingContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    emptyText: {
-      textAlign: 'center',
-      marginTop: 20,
-      fontSize: 16,
-      color: '#555',
-    },
-  });
-  
-  export default MoviesByCategoryScreen;
+export default MoviesByCategoryScreen;
