@@ -17,7 +17,18 @@ const Tab = createBottomTabNavigator();
 
 const SearchStack = createNativeStackNavigator();
 const SearchStackNavigator = () => (
-  <SearchStack.Navigator>
+  <SearchStack.Navigator
+    screenOptions={{
+      headerStyle: { backgroundColor: '#60d3e1' },
+      headerTintColor: '#28353d',
+      headerTitleStyle: { color: '#fff' },
+      headerBackTitleVisible: true,
+      headerBackTitleStyle: { color: '#28353d' },
+      headerBackImage: () => (
+        <Ionicons name="arrow-back" size={24} color="#60d3e1" style={{ marginLeft: 10 }} />
+      ),
+    }}
+  >
     <SearchStack.Screen 
       name="Search" 
       component={SearchScreen} 
@@ -31,14 +42,24 @@ const SearchStackNavigator = () => (
   </SearchStack.Navigator>
 );
 
-
 const HomeStack = createNativeStackNavigator();
 const HomeStackNavigator = () => (
-  <HomeStack.Navigator>
+  <HomeStack.Navigator
+    screenOptions={{
+      headerStyle: { backgroundColor: '#60d3e1' },
+      headerTintColor: '#28353d',
+      headerTitleStyle: { color: '#fff' },
+      headerBackTitleVisible: true,
+      headerBackTitleStyle: { color: '#28353d' },
+      headerBackImage: () => (
+        <Ionicons name="arrow-back" size={24} color="#60d3e1" style={{ marginLeft: 10 }} />
+      ),
+    }}
+  >
     <HomeStack.Screen 
       name="Home" 
       component={HomeScreen} 
-      options={{ title: 'Home' }} 
+      options={{ title: 'Popular Movies This Month' }} 
     />
     <HomeStack.Screen 
       name="MovieDetails" 
@@ -48,10 +69,20 @@ const HomeStackNavigator = () => (
   </HomeStack.Navigator>
 );
 
-
 const CategoriesStack = createNativeStackNavigator();
 const CategoriesStackNavigator = () => (
-  <CategoriesStack.Navigator>
+  <CategoriesStack.Navigator
+    screenOptions={{
+      headerStyle: { backgroundColor: '#60d3e1' },
+      headerTintColor: '#28353d',
+      headerTitleStyle: { color: '#fff' },
+      headerBackTitleVisible: true,
+      headerBackTitleStyle: { color: '#28353d' },
+      headerBackImage: () => (
+        <Ionicons name="arrow-back" size={24} color="#60d3e1" style={{ marginLeft: 10 }} />
+      ),
+    }}
+  >
     <CategoriesStack.Screen 
       name="Categories" 
       component={CategoriesScreen} 
@@ -70,46 +101,62 @@ const CategoriesStackNavigator = () => (
   </CategoriesStack.Navigator>
 );
 
+
 const TabNavigator = () => (
-  <NavigationContainer>
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          let iconName;
-
-          if (route.name === 'Home') {
-            iconName = 'home';
-          } else if (route.name === 'Search') {
-            iconName = 'search';
-          } else if (route.name === 'Categories') {
-            iconName = 'list';
-          } else if (route.name === 'Favorites') {
-            iconName = 'heart';
-          }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: '#2a9d8f',
-        tabBarInactiveTintColor: 'gray',
-      })}
-    >
-      <Tab.Screen 
-        name="Home" 
-        component={HomeStackNavigator} 
-        options={{ headerShown: false }} 
-      />
-      <Tab.Screen 
-        name="Search" 
-        component={SearchStackNavigator} 
-        options={{ headerShown: false }} 
-      />
-      <Tab.Screen 
-        name="Categories" 
-        component={CategoriesStackNavigator} 
-        options={{ headerShown: false }} 
-      />
-    </Tab.Navigator>
-  </NavigationContainer>
-);
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ color, size }) => {
+            let iconName;
+  
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Search') {
+              iconName = 'search';
+            } else if (route.name === 'Categories') {
+              iconName = 'list';
+            } else if (route.name === 'Favorites') {
+              iconName = 'heart';
+            }
+  
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: '#28353d',
+          tabBarInactiveTintColor: 'white',
+          tabBarStyle: {
+            backgroundColor: '#60d3e1',
+            borderTopWidth: 1, 
+            borderTopColor: '#28353d',
+          },
+          tabBarItemStyle: {
+            borderRightWidth: route.name !== 'Categories' ? 1 : 0, 
+            borderRightColor: '#28353d',
+          },
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontWeight: 'bold',
+            color: 'white',
+          },
+        })}
+      >
+        <Tab.Screen 
+          name="Home" 
+          component={HomeStackNavigator} 
+          options={{ headerShown: false }} 
+        />
+        <Tab.Screen 
+          name="Search" 
+          component={SearchStackNavigator} 
+          options={{ headerShown: false }} 
+        />
+        <Tab.Screen 
+          name="Categories" 
+          component={CategoriesStackNavigator} 
+          options={{ headerShown: false }} 
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+  
 
 export default TabNavigator;

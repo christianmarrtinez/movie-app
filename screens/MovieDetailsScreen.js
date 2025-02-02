@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     marginVertical: 10,
     textAlign: 'center',
-    color: '#60d3e1',
+    color: 'white',
   },
 });
 

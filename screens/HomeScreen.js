@@ -48,7 +48,7 @@ const HomeScreen = () => {
       data={movies}
       keyExtractor={(item) => item.id.toString()}
       renderItem={renderMovie}
-      contentContainerStyle={[styles.list, { backgroundColor: '#28353d' }]} // Ensuring background color is set
+      contentContainerStyle={[styles.list, { backgroundColor: '#28353d' }]}
       ListEmptyComponent={<Text style={styles.emptyText}>No movies found</Text>}
     />
   );

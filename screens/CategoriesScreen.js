@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { getMovieCategories, fetchMoviesByCategory } from '../services/api';
-import styles from '../styles/styles'; // Import global styles
+import styles from '../styles/styles'; 
 
 const CategoriesScreen = ({ navigation }) => {
   const [categories, setCategories] = useState([]);
